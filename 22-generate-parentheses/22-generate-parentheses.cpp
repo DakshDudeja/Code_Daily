@@ -12,7 +12,7 @@ public:
             output_arr.push_back(current_string);
             return;
         }
-        
+    
         if(open < max){
             backtracking(output_arr, current_string + "(", open + 1, close, max);
         }
