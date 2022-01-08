@@ -1,5 +1,6 @@
 class Solution {
 public:    
+    int tp=0;
     vector<vector<string>> ans;
 
      bool isValid(vector<string> &board, int row, int col){
@@ -16,6 +17,7 @@ public:
     }
     void solve(int n,int row,vector<string>&board){
         if(row==board.size()){
+            tp++;
             ans.push_back(board);
             return;
         }
@@ -32,6 +34,6 @@ public:
          if(n <= 0) return {{}};
         vector<string> board(n,string(n,'.'));
         solve(n,0,board);
-        return ans.size();
+        return tp;
     }
 };
