@@ -1,89 +1,24 @@
 class Solution {
 public:
-    
-    
-    int dp[70][70][70];
- 
-    
-    int recurs(vector<vector<int>>& grid, int i,int j,int j1 )
-    {
-       
-       int i1=i;
-        
-        int n=grid.size();
-        int n1=grid[0].size();
-        
-        int a=0;
-        
-        if(i<0||i>=n||i1<0||i1>=n||j<0||j>=n1||j1<0||j1>=n1)
-        {
-            return INT_MIN;
-        }
-        
-        
-        if(dp[i][j][j1]!=-1)
-        {
-            return dp[i][j][j1];
-        }
-        
-        
-        if(i==n-1&&i1==n-1&&j!=j1)
-        {
-            return grid[i][j]+grid[i1][j1];
-        }
-        
-        if(i==n-1&&i1==n-1)
-        {
-            return grid[i][j];
-        }
-     
-
-        else if(i==i1&&j==j1)
-        {
-          
-      
-            a=max(a,recurs(grid,i+1,j-1,j1-1)+grid[i][j]);
-            a=max(a,recurs(grid,i+1,j-1,j1)+grid[i][j]);
-            a=max(a,recurs(grid,i+1,j-1,j1+1)+grid[i][j]);
-            
-            
-            a=max(a,recurs(grid,i+1,j,j1-1)+grid[i][j]);
-            a=max(a,recurs(grid,i+1,j,j1)+grid[i][j]);
-            a=max(a,recurs(grid,i+1,j,j1+1)+grid[i][j]);
-            
-            a=max(a,recurs(grid,i+1,j+1,j1-1)+grid[i][j]);
-            a=max(a,recurs(grid,i+1,j+1,j1)+grid[i][j]);
-            a=max(a,recurs(grid,i+1,j+1,j1+1)+grid[i][j]);
-   
-        
-        }
-             else
-        { 
-         
-            a=max(a,recurs(grid,i+1,j-1,j1-1)+grid[i][j]+grid[i1][j1]);
-            a=max(a,recurs(grid,i+1,j-1,j1)+grid[i][j]+grid[i1][j1]);
-            a=max(a,recurs(grid,i+1,j-1,j1+1)+grid[i][j]+grid[i1][j1]);
-            
-            
-            a=max(a,recurs(grid,i+1,j,j1-1)+grid[i][j]+grid[i1][j1]);
-            a=max(a,recurs(grid,i+1,j,j1)+grid[i][j]+grid[i1][j1]);
-            a=max(a,recurs(grid,i+1,j,j1+1)+grid[i][j]+grid[i1][j1]);
-            
-            a=max(a,recurs(grid,i+1,j+1,j1-1)+grid[i][j]+grid[i1][j1]);
-            a=max(a,recurs(grid,i+1,j+1,j1)+grid[i][j]+grid[i1][j1]);
-            a=max(a,recurs(grid,i+1,j+1,j1+1)+grid[i][j]+grid[i1][j1]);
-   
-        
-        }
-        return dp[i][j][j1]=a;
-    }
-
+    int dp[70][70][70] = {};
     int cherryPickup(vector<vector<int>>& grid) {
-      
-        
- memset(dp,-1,sizeof(dp));
-        
-        
-return recurs(grid, 0,0,grid[0].size()-1);
+        memset(dp, -1, sizeof(dp));
+        int m = grid.size(), n = grid[0].size();
+        return dfs(grid, m, n, 0, 0, n - 1);
+    }
+    int dfs(vector<vector<int>>& grid, int m, int n, int r, int c1, int c2) {
+        if (r == m) return 0; // Reach to bottom row
+        if (dp[r][c1][c2] != -1) return dp[r][c1][c2];
+        int ans = 0;
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                int nc1 = c1 + i, nc2 = c2 + j;
+                if (nc1 >= 0 && nc1 < n && nc2 >= 0 && nc2 < n) {
+                    ans = max(ans, dfs(grid, m, n, r + 1, nc1, nc2));
+                }
+            }
+        }
+        int cherries = c1 == c2 ? grid[r][c1] : grid[r][c1] + grid[r][c2];
+        return dp[r][c1][c2] = ans + cherries;
     }
 };
