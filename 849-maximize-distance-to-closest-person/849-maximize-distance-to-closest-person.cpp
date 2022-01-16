@@ -10,10 +10,10 @@ public:
         }
         for(int i=0;i<n;i++){
             if(seats[i]==0){
-                ans++;
+                count++;
             }else{
-            count=max(count, (ans+1)/2);
-            ans=0;
+            ans=max(ans, (count+1)/2);
+            count=0;
             }
         }
         return max(ans,count);
