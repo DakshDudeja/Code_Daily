@@ -20,19 +20,23 @@ public:
 
 class Solution {
 public:
-     vector<int>res;
-    void postOrder(Node* root){
-        if(!root) return;
-        for(Node* child:root->children){
-            postOrder(child);
-        }
-                res.push_back(root->val);
 
-    
-        return;
-    }
     vector<int> postorder(Node* root) {
-        postOrder(root);
+        vector<int>res;
+        stack<Node*>st;
+        if(root==NULL) return res;
+        st.push(root);
+        while(!st.empty()){
+            Node* temp = st.top();
+            st.pop();
+            res.push_back(temp->val);
+            vector<Node*>child = temp->children;
+                int n=child.size();
+            for(int i=0;i<n;i++){
+                st.push(child[i]);
+            }
+        }
+        reverse(res.begin(),res.end());
         return res;
     }
 };
