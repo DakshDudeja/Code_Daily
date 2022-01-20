@@ -11,21 +11,21 @@
  */
 class Solution {
 public:
-    void solve(TreeNode *root,int level,set<int>&s,vector<int>&res){
+vector<int>res;
+void solve(TreeNode *root,int idx,unordered_map<int,int>&mp){
         if(root == NULL) return;
 
-    if(s.find(level)==s.end()){
-        s.insert(level);
+    if(mp.find(idx)==mp.end()){
+        mp[idx]=1;
         res.push_back(root->val);
     }
-     solve(root->right,level+1,s,res);
-     solve(root->left,level+1,s,res);
+    solve(root->right,idx+1,mp);
+    solve(root->left,idx+1,mp);
      return;
 }
     vector<int> rightSideView(TreeNode* root) {
-         vector<int>res;
-   set<int>s;
-    solve(root,1,s,res);
+    unordered_map<int,int>mp;
+    solve(root,1,mp);
     return res;
     }
 };
