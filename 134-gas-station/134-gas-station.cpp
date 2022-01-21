@@ -1,27 +1,20 @@
 class Solution {
 public:
     int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
-        
-        int total_cost=0,total_fuel=0,n=cost.size();
-        for(int i=0;i<n;i++)
-        {
-            total_cost+=cost[i];
-            total_fuel+=gas[i];
-        }
-        // If the total fuel is lesser than the cost then definitely we can't cover the whole cicular tour.
-        if(total_fuel<total_cost)
-        {
-            return -1;
-        }
-        int temp=0,idx=0;
+        int tank=0,total=0,index=0;
         for(int i=0;i<gas.size();i++){
+            int consume=gas[i]-cost[i];
+            tank+=consume;
             
-            if(temp<0){
-                idx=i;
-                temp=0;
+            if(tank<0){
+                index=i+1;
+                tank=0;
             }
-            temp+=gas[i]-cost[i];
+            total+=consume;
+            
         }
-        return idx;
+        if(total>=0) return index;
+        else
+            return -1;
     }
 };
