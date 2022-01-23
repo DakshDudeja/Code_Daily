@@ -11,28 +11,27 @@
  */
 class Solution {
 public:
-    void addLeftSubtree(TreeNode* &temp,stack<TreeNode*>&st){
+    void addLeftSubTree(TreeNode *temp,stack<TreeNode*>&st){
         st.push(temp);
         while(temp->left!=NULL){
             st.push(temp->left);
-            temp=temp->left;   
+            temp=temp->left;
         }
-        
         return;
     }
     vector<int> inorderTraversal(TreeNode* root) {
-        vector<int>res;
+         vector<int>res;
         stack<TreeNode*>st;
         if(root==NULL) return res;
-        addLeftSubtree(root,st);
+        addLeftSubTree(root,st);
+
         while(!st.empty()){
             TreeNode* temp = st.top();
             st.pop();
             res.push_back(temp->val);
             
-            if(temp->right!=NULL) 
-                addLeftSubtree(temp->right,st);
-            
+            if(temp->right)
+                addLeftSubTree(temp->right,st);            
         }
         return res;
     }
