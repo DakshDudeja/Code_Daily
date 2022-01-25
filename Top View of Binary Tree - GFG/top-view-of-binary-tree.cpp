@@ -99,15 +99,21 @@ class Solution
         vector<int>res;
         if(root==NULL) return res;
         queue<pair<Node*,int>>q;
-                int dist=0;
-
+        
+        int left  = 1000000;
+        int right = -1000000;    //trick to sort hashmap 
+        
+        int dist=0;
         q.push({root,dist});
-        map<int,int>mp;
+        unordered_map<int,int>mp;
         while(!q.empty()){
 
             Node*temp = q.front().first;
             int dist = q.front().second;
             q.pop();
+            
+            left = min(left,dist); //trick to sort hashmap 
+            right = max(right,dist);
             
             if(mp.find(dist)==mp.end()){
                 mp[dist]=temp->data;
@@ -115,8 +121,8 @@ class Solution
             if(temp->left) q.push({temp->left,dist-1});
             if(temp->right) q.push({temp->right,dist+1});
         }
-        for(auto it=mp.begin();it!=mp.end();it++){
-            res.push_back(it->second);
+        for(int i=left;i<=right;i++){
+            res.push_back(mp[i]);
         }
         return res;
         
