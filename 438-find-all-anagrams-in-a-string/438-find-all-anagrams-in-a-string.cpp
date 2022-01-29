@@ -15,11 +15,10 @@ public:
             if(smp==pmp) 
                 res.push_back(left);
             right+=1;
-            if(right!=len){
+            if(right!=len)
                 smp[s[right]-'a']+=1;
                 smp[s[left]-'a']-=1;
             
-            }
             
             left+=1;
         }
