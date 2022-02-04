@@ -1,14 +1,20 @@
 class Solution {
 public:
-    void dfs(vector<vector<char>>& grid,int i,int j,int m,int n){
-        if(i<0 || j<0 ||i>=m || j>=n || grid[i][j]=='0') return;
-        
-        grid[i][j]='0';
-        dfs(grid,i+1,j,m,n);
-        dfs(grid,i,j+1,m,n);
-        dfs(grid,i-1,j,m,n);
-        dfs(grid,i,j-1,m,n);
-        return;
+    void bfs(vector<vector<char>>& grid,int i,int j,int m,int n){
+        queue<pair<int,int>>q;
+        q.push({i,j});
+        while(!q.empty()){
+            int currR = q.front().first;
+            int currC = q.front().second;
+            q.pop();
+            if(currR<0||currC<0 ||currR>=m||currC>=n || grid[currR][currC]=='0')continue;
+            grid[currR][currC]='0';
+            q.push({currR+1,currC});
+            q.push({currR,currC+1});
+            q.push({currR-1,currC});
+            q.push({currR,currC-1});
+
+        }
     }
     int numIslands(vector<vector<char>>& grid) {
         int m=grid.size();
@@ -19,7 +25,7 @@ public:
                 
                 if(grid[i][j]=='1'){
                     cnt++;
-                    dfs(grid,i,j,m,n);
+                    bfs(grid,i,j,m,n);
 
                 }
             }
