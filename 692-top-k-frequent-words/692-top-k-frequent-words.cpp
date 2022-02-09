@@ -9,10 +9,10 @@ public:
         }
     };
     struct compare{
-        bool operator()(Node const&s1,Node const&b){
-            if(s1.freq==b.freq) return s1.s > b.s;
+        bool operator()(Node &s1,Node &s2){
+            if(s1.freq==s2.freq) return s1.s > s2.s;
             
-            return s1.freq < b.freq;
+            return s1.freq < s2.freq;
         }
     };
     vector<string> topKFrequent(vector<string>& words, int k) {
