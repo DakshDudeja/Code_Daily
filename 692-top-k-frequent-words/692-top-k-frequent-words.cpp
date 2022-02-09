@@ -1,19 +1,35 @@
 class Solution {
 public:
+    struct Node{
+        string s;                           //i:2 , love-2 , leetcode-1, coding-1
+        int freq;
+        Node(string s1,int b){
+            s=s1;
+            freq=b;
+        }
+    };
+    struct compare{
+        bool operator()(Node const&s1,Node const&b){
+            if(s1.freq==b.freq) return s1.s > b.s;
+            
+            return s1.freq < b.freq;
+        }
+    };
     vector<string> topKFrequent(vector<string>& words, int k) {
-        unordered_map <string, int> umap;
-        for (string s: words) umap[s]++;
-        priority_queue <pair<int, string>> pq;
-        for (auto it: umap) {
-            pq.push({-it.second, it.first});
-            if(pq.size() > k) pq.pop();
+        unordered_map<string,int>mp;
+        for(auto it:words){
+            mp[it]++;
         }
-        vector <string> res;
-        while (k--) {
-            res.push_back(pq.top().second);
-            pq.pop();
+        priority_queue<Node,vector<Node>,compare>heap;
+        for(auto it:mp)
+            heap.push(Node(it.first,it.second));
+        
+        vector<string>ans;
+        while(k--){
+            Node temp=heap.top();
+            heap.pop();
+            ans.push_back(temp.s);
         }
-        reverse (res.begin(), res.end());
-        return res;
+        return ans;
     }
 };
