@@ -8,24 +8,27 @@ public:
             indegree[arr[1]]++;
         }
         queue<int>q;
+        int ans=0; //no of elements having indegree 0
         for(int i=0;i<indegree.size();i++){
-            if(indegree[i]==0)
+            if(indegree[i]==0){
                 q.push(i);
+                ans++;   
+            }
         }
         int cnt=0;
         while(!q.empty()){
             int currVtx = q.front();
             q.pop();
-            cnt++;
             for(int neighbour:graph[currVtx]){
                 indegree[neighbour]--;
                 
                 if(indegree[neighbour]==0){
                     q.push(neighbour);
+                    ans++;
                 }
             }                
         }
-        return cnt==numCourses;
+        return ans==indegree.size();
 
         
     }
