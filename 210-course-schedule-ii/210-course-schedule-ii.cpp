@@ -1,47 +1,48 @@
 class Solution {
 public:
-    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
-        vector<vector<int>>graph(numCourses);
-        vector<int>indegree(numCourses,0);
-        
-        for(vector<int>&arr:prerequisites){
-            graph[arr[1]].push_back(arr[0]);
-            indegree[arr[0]]++;
-        }
-        
-        queue<int>que;
-        vector<int>ans;
-        for(int i=0;i<numCourses;i++)
+    vector<vector<int>>ConstructGraph(int n, vector<vector<int>>&edges)  
+     {
+         vector<vector<int>>g(n);
+        for(auto it:edges)
         {
-            if(indegree[i]==0){
-                que.push(i);
-                //ans.push_back(i);
-            }
+            int v = it[0];
+            int u = it[1];
+            g[u].push_back(v);
         }
-        int cn=0;
-        while(!que.empty())
+        return g;
+     }
+    vector<int> findOrder(int n, vector<vector<int>>&edges) {
+        vector<vector<int>>graph = ConstructGraph(n,edges);
+        unordered_set<int>visited;
+        unordered_set<int>recstack;
+        vector<int>Traversal;
+        for(int currvertex = 0;currvertex<n;currvertex++)
         {
-            int currVtx = que.front();
-            que.pop();
-            //cout<<currVtx<<" ";
-            for(int nbr:graph[currVtx])
+            if(visited.find(currvertex)!=visited.end())
+                continue;
+            if(isCyclic(graph,currvertex,visited,recstack,Traversal))
+                return {};
+        }
+        reverse(Traversal.begin(),Traversal.end());
+         return Traversal;
+    }
+    
+    bool isCyclic(vector<vector<int>>&graph,int currvertex,unordered_set<int>&visited,unordered_set<int>&recstack,vector<int>&Traversal)
+    {
+        visited.insert(currvertex);
+        recstack.insert(currvertex);
+        for(int neighbour:graph[currvertex])
+        {
+            if(visited.find(neighbour)==visited.end())
             {
-                indegree[nbr]--;
-                
-                if(indegree[nbr]==0)
-                {
-                    que.push(nbr);
-                
-                }
+                if(isCyclic(graph,neighbour,visited,recstack,Traversal))
+                    return true;
             }
-               ans.push_back(currVtx);
-               cn++;
-            if(cn==numCourses){break;}
+            else if(recstack.find(neighbour)!=recstack.end())
+                return true;
         }
-        //sort(ans.begin(),ans.end());
-        if(cn==numCourses){
-        return ans;}
-        ans.clear();
-        return ans;
+        Traversal.push_back(currvertex);
+        recstack.erase(currvertex);
+        return false;
     }
 };
