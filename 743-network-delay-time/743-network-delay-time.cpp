@@ -15,8 +15,7 @@ public:
         priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
         cost[k]=0;
         pq.push(make_pair(0,k));
-        int count=0;
-        while(count<n and !pq.empty()){
+        while(!pq.empty()){
             int currVertex = pq.top().second;
             int currCost = pq.top().first;
             pq.pop();
@@ -24,7 +23,6 @@ public:
             
             cost[currVertex] = currCost;
             vis[currVertex] =true;
-            count++;
             for(auto nbr:graph[currVertex]){
                 int currNbr = nbr.first;
                 int currNbrCost = nbr.second;
