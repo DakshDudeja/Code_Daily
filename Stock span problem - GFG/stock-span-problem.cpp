@@ -8,21 +8,20 @@ class Solution
 {
     public:
    vector <int> calculateSpan(int price[], int n)
-   {
-      // Your code here
-      vector<int>ans;
-      stack<pair<int,int>>s;
-      for(int i=0;i<n;i++){
-          int days=1;
-          while(!s.empty()and s.top().first<=price[i]){
-              days+=s.top().second;
-              s.pop();
-          }
-          s.push({price[i],days});
-          ans.push_back(days);
-      }
-     return ans;
-   }
+    {
+       // Your code here
+       vector<int>ans(n);
+       stack<int>st;
+       st.push(-1);
+       for(int i=0;i<n;i++){
+           while(st.top()!=-1 and price[st.top()]<=price[i]) st.pop();
+           
+           ans[i]=i-st.top();
+           st.push(i);
+       }
+       
+       return ans;
+    }
 };
 
 
